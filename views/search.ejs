@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultado da Busca</title>
+</head>
+<body>
+    <h1>Resultado da Busca</h1>
+    <p>ID: <%= id %></p>
+    <p>Nome: <%= nome %></p>
+<a href="http://localhost:3333">
+    <button> Voltar</button>
+</a>
+<form action="/remove" method="POST">
+    <input type="hidden" name="id" value="<%= id %>">
+    <button type="submit">
+        Remover
+    </button>
+</form>
+
+<form action="/alterP" method="Post">
+    <input type="hidden" name="id" value="<%= id %>">
+    <button type="submit">
+        Alterar
+    </button>
+</form>
+</body>
+</html>

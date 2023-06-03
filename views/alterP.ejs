@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/alter" method="POST">
+        <fieldset id="dados">
+            <legend>Dados</legend>
+            <p>ID: <%= id %></p>
+            <p> <label for="nome">Nome:</label>
+                <input type="text" name="nome" id="nome"> </p>
+            <p> <label for="preco">Preço:</label>
+                <input type="number" step="0.01" min="0" name="preco" id="preco"> </p>
+            <p> <label for="desc">Descrição:</label>
+                <input type="text" name="desc" id="desc"> </p>
+        </fieldset>
+        <input type="hidden" name="id" value="<%= id %>">
+        <button type="submit">OK</button>
+    </form>
+    <a href="http://localhost:3333">
+        <button> Voltar</button>
+    </a>
+</body>
+</html>
