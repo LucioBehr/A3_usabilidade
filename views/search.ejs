@@ -2,26 +2,44 @@
 <html>
 <head>
     <title>Resultado da Busca</title>
+    <style>
+        .item-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .item-buttons {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Resultado da Busca</h1>
-    <p>ID: <%= id %></p>
-    <p>Nome: <%= nome %></p>
-<a href="http://localhost:3333">
-    <button> Voltar</button>
-</a>
-<form action="/remove" method="POST">
-    <input type="hidden" name="id" value="<%= id %>">
-    <button type="submit">
-        Remover
-    </button>
-</form>
-
-<form action="/alterP" method="Post">
-    <input type="hidden" name="id" value="<%= id %>">
-    <button type="submit">
-        Alterar
-    </button>
-</form>
-</body>
+    <% if (items && items.length > 0) { %>
+        <% items.forEach(function(item) { %>
+            <div class="item-container">
+                <div>
+                    <p>ID: <%= item.id %></p>
+                    <p>Nome: <%= item.nome %></p>
+                </div>
+                <div class="item-buttons">
+                    <form action="/remove" method="POST">
+                        <input type="hidden" name="id" value="<%= item.id %>">
+                        <button type="submit">Remover</button>
+                    </form>
+                    <form action="/alterP" method="POST">
+                        <input type="hidden" name="id" value="<%= item.id %>">
+                        <button type="submit">Alterar</button>
+                    </form>
+                </div>
+            </div>
+            <hr>
+        <% }) %>
+    <% } else { %>
+        <p>Nenhum item encontrado</p>
+    <% } %>
+    <a href="http://localhost:3333">
+        <button>Voltar</button>
+    </a>
+</body> 
 </html>
