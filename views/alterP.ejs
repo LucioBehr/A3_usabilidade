@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/style.css">
     <title>Document</title>
 </head>
+
 <body>
+    <header>
+        <form action="/search" method="POST">
+            <p id ="sc">
+            <input type="text" name="scid" id="scid" placeholder="Buscar por ID">
+            <button type="submit">OK</button>
+            </p>
+        </form>
+    </header>
     <form action="/alter" method="POST">
         <fieldset id="dados">
             <legend>Dados</legend>

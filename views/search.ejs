@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Resultado da Busca</title>
-    <style>
-        .item-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .item-buttons {
-            display: flex;
-            gap: 10px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>Document</title>
+    
 </head>
+
 <body>
+    <header>
+        <form action="/search" method="POST">
+            <p id ="sc">
+            <input type="text" name="scid" id="scid" placeholder="Buscar por ID">
+            <button type="submit">OK</button>
+            </p>
+        </form>
+    </header>
     <% if (items && items.length > 0) { %>
         <% items.forEach(function(item) { %>
             <div class="item-container">
@@ -41,5 +44,5 @@
     <a href="http://localhost:3333">
         <button>Voltar</button>
     </a>
-</body> 
+</body>
 </html>

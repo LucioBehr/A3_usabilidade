@@ -3,6 +3,7 @@ var http = require('http');
 var path = require('path');
 var sqlite3 = require('sqlite3');
 var app = express();
+app.use(express.static(path.join(__dirname, '/css')));
 //var sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -11,6 +12,8 @@ app.set('view engine', 'ejs'); // Configura o mecanismo de visualização para E
 app.set('views', path.join(__dirname, 'views')); // Define o diretório de views
 
 var db = new sqlite3.Database('./BD/BD.db');
+
+
 
 var porta = 3333;
 app.use(cors({
@@ -23,6 +26,8 @@ var server = http.createServer(app);
 app.get('/', function(req, res) {
     db.all('SELECT id, nome FROM Item', function(err, rows) {
 
+        res.setHeader('Cache-Control', 'no-store, must-revalidate');//
+        res.setHeader('Expires', '0');//Garante que toda vez que a index for startada, o cache sera desconsiderado para exibir a pagina atualizada.
             // Itens encontrados, renderize a página de resultados da busca
             res.render('index', { items: rows });
         
@@ -45,7 +50,8 @@ app.get('/', function(req, res) {
                     res.render('errorS', { message: 'ID já está cadastrado' });
                 } else {
                     // ID não está cadastrado, inserir o novo item
-                    db.run('INSERT INTO Item(id, nome, preco, desc) VALUES (?, ?, ?, ?)',
+                    if (req.body.id != null && req.body.nome.trim() != "" && req.body.preco != null) {
+                        db.run('INSERT INTO Item(id, nome, preco, desc) VALUES (?, ?, ?, ?)',
                         [req.body.id, req.body.nome, req.body.preco, req.body.desc],
                         function(err) {
                             if (err) {
@@ -55,6 +61,11 @@ app.get('/', function(req, res) {
                             res.render('add', { id: req.body.id, nome: req.body.nome });
                         }
                     );
+                    }
+                    else{
+                        res.render('errorS', { message: 'Valores digitados invalidos. ID, Nome e preço do produto São obrigatorios!!' });
+                    }
+
                 }
             });
         });
