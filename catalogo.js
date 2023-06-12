@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 var server = http.createServer(app);
 app.get('/', function(req, res) {
-    db.all('SELECT id, nome FROM Item', function(err, rows) {
+    db.all('SELECT id, nome, preco, descricao, qtd FROM Item', function(err, rows) {
 
         res.setHeader('Cache-Control', 'no-store, must-revalidate');//
         res.setHeader('Expires', '0');//Garante que toda vez que a index for startada, o cache sera desconsiderado para exibir a pagina atualizada.
@@ -50,20 +50,20 @@ app.get('/', function(req, res) {
                     res.render('errorS', { message: 'ID já está cadastrado' });
                 } else {
                     // ID não está cadastrado, inserir o novo item
-                    if (req.body.id != null && req.body.nome.trim() != "" && req.body.preco != null) {
-                        db.run('INSERT INTO Item(id, nome, preco, desc) VALUES (?, ?, ?, ?)',
-                        [req.body.id, req.body.nome, req.body.preco, req.body.desc],
+                    if (req.body.nome.trim() != "") { // Validação se id, preço e quantidade são maiores que 0 e se o nome não é vazio
+                        db.run('INSERT INTO Item(id, nome, preco, descricao, qtd) VALUES (?, ?, ?, ?, ?)',
+                        [req.body.id, req.body.nome, req.body.preco, req.body.descricao, req.body.qtd],
                         function(err) {
                             if (err) {
                                 return console.log(err.message);
                             }
     
-                            res.render('add', { id: req.body.id, nome: req.body.nome });
+                            res.render('add', { id: req.body.id, nome: req.body.nome, preco: req.body.preco, descricao: req.body.descricao, qtd: req.body.qtd });
                         }
                     );
                     }
                     else{
-                        res.render('errorS', { message: 'Valores digitados invalidos. ID, Nome e preço do produto São obrigatorios!!' });
+                        res.render('errorS', { message: 'Nome precisa ser preenchido.' });
                     }
 
                 }
@@ -71,17 +71,17 @@ app.get('/', function(req, res) {
         });
     });
     app.post('/search', function(req, res) {
-        db.all('SELECT id, nome FROM Item WHERE id = ? OR nome LIKE ?', [req.body.scid, '%' + req.body.scid + '%'], function(err, rows) {
+        db.all('SELECT id, nome, preco, descricao, qtd FROM Item WHERE id = ? OR nome LIKE ?', [req.body.scid, '%' + req.body.scid + '%'], function(err, rows) {
             if (err) {
                 res.send("Erro ao encontrar itens");
                 return console.error(err.message);
             }
     
-            if (!rows || rows.length === 0) {
+            if (!rows || rows.length == 0) {
                 res.render('errorS', { message: 'Produto não encontrado' });
             } else {
                 // Itens encontrados, renderize a página de resultados da busca
-                res.render('search', { items: rows , id: req.body.id, nome: req.body.nome});
+                res.render('search', { items: rows , id: req.body.id, nome: req.body.nome, preco: req.body.preco, descricao: req.body.descricao, qtd: req.body.qtd });
             }
         });
     });
@@ -92,17 +92,22 @@ app.get('/', function(req, res) {
     app.post('/alter', function(req, res) {
         // Lógica para alterar os dados do item no banco de dados
         db.serialize(()=>{
-            db.run('UPDATE Item SET nome = ?, preco = ?, desc = ? WHERE id = ?',
-            [req.body.nome, req.body.preco, req.body.desc, req.body.id],
-            function(err){
-                if (err){
-                    return console.log(err.message);
-                }
+            if (req.body.nome.trim() != "") {//validacao se nome não é vazio
+                db.run('UPDATE Item SET nome = ?, preco = ?, descricao = ?, qtd = ? WHERE id = ?',
+                [req.body.nome, req.body.preco, req.body.descricao, req.body.qtd, req.body.id],
+                function(err){
+                    if (err){
+                        return console.log(err.message);
+                    }
+                    res.render('alter', { id: req.body.id, nome: req.body.nome,preco: req.body.preco, descricao: req.body.descricao, qtd: req.body.qtd });
+                
+                        
+                });
+            }
+            else{
+                res.render('errorS', { message: 'Nome precisa ser preenchido.' });
+            }
 
-                res.render('alter', { id: req.body.id, nome: req.body.nome });
-            
-                    
-            });
         });
     });
 
@@ -112,21 +117,16 @@ app.get('/', function(req, res) {
                 if (err) {
                     return console.log(err.message);
                 }
-    
-                // Realize a consulta ao banco de dados novamente para obter a lista atualizada de itens
+                
+
                 db.all('SELECT id, nome FROM Item', function(err, rows) {
                     if (err) {
                         console.error(err.message);
                         res.send("Erro ao encontrar itens");
                         return;
                     }
-    
-                    if (!rows || rows.length === 0) {
-                        res.render('index', { items: rows });
-                    } else {
-                        // Itens encontrados, renderize a página de resultados da busca com os itens atualizados
-                        res.render('index', { items: rows });
-                    }
+
+                        res.redirect('/');
                 });
             });
         });

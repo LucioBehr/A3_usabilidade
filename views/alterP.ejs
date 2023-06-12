@@ -22,11 +22,14 @@
             <legend>Dados</legend>
             <p>ID: <%= id %></p>
             <p> <label for="nome">Nome:</label>
-                <input type="text" name="nome" id="nome"> </p>
+                <input type="text" name="nome" id="nome" > </p>
             <p> <label for="preco">Preço:</label>
-                <input type="number" step="0.01" min="0" name="preco" id="preco"> </p>
-            <p> <label for="desc">Descrição:</label>
-                <input type="text" name="desc" id="desc"> </p>
+                <input type="number" step="0.01" min="0.01" name="preco" id="preco"> </p>
+            <p> <label for="descricao">Descrição:</label>
+                <input type="text" name="descricao" id="descricao"> </p>
+                <p> <label for="qtd">Quantidade:</label>
+                    <input type="number" name="qtd" min="0" id="qtd"> </p>
+                
         </fieldset>
         <input type="hidden" name="id" value="<%= id %>">
         <button type="submit">OK</button>
