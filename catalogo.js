@@ -50,7 +50,7 @@ app.get('/', function(req, res) {
                     res.render('errorS', { message: 'ID já está cadastrado' });
                 } else {
                     // ID não está cadastrado, inserir o novo item
-                    if (req.body.nome.trim() != "") { // Validação se id, preço e quantidade são maiores que 0 e se o nome não é vazio
+                    if (req.body.nome.trim() != "" && req.body.preco > 0 && req.body.qtd >0 && req.body.id >0) { // Validação se id, preço e quantidade são maiores que 0 e se o nome não é vazio
                         db.run('INSERT INTO Item(id, nome, preco, descricao, qtd) VALUES (?, ?, ?, ?, ?)',
                         [req.body.id, req.body.nome, req.body.preco, req.body.descricao, req.body.qtd],
                         function(err) {
@@ -63,7 +63,7 @@ app.get('/', function(req, res) {
                     );
                     }
                     else{
-                        res.render('errorS', { message: 'Nome precisa ser preenchido.' });
+                        res.render('errorS', { message: 'Nome, ID, Preço e quantidade são obrigatórios.' });
                     }
 
                 }
@@ -92,7 +92,7 @@ app.get('/', function(req, res) {
     app.post('/alter', function(req, res) {
         // Lógica para alterar os dados do item no banco de dados
         db.serialize(()=>{
-            if (req.body.nome.trim() != "") {//validacao se nome não é vazio
+            if (req.body.nome.trim() != "" && req.body.preco > 0 && req.body.qtd >0) {//validacao se nome não é vazio
                 db.run('UPDATE Item SET nome = ?, preco = ?, descricao = ?, qtd = ? WHERE id = ?',
                 [req.body.nome, req.body.preco, req.body.descricao, req.body.qtd, req.body.id],
                 function(err){
@@ -105,7 +105,7 @@ app.get('/', function(req, res) {
                 });
             }
             else{
-                res.render('errorS', { message: 'Nome precisa ser preenchido.' });
+                res.render('errorS', { message: 'Nome, ID, Preço e quantidade são obrigatórios.' });
             }
 
         });
