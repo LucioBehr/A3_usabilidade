@@ -1,5 +1,6 @@
 *{
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-color: black;
 }
 header {
     margin: -20px -10px 10px -10px;
@@ -58,18 +59,52 @@ footer {
     gap: 20px;
 }
 
-.btn{
-    font-family: Arial;
-    font-size: 15px;
+button{
     text-transform: uppercase;
     font-weight: 700;
     padding: 10px;
     cursor: pointer;
     background-color: rgb(197, 196, 201);
+    border-radius: 10px 10px;
+    transition: background-color 0.3s ease;
+    border-style:groove;
 }
 
-.btn:active{
+button:active{
     position: relative;
     top:5px;
     box-shadow: none;
+}
+button:hover {
+    background-color: #26385a;
+    color: white;
+    border-color: black;
+}
+
+.box{
+	width:160px;
+	background-color:#fcfcfc;
+	border-radius: 10px 10px;
+    text-align: center;
+
+}
+label {
+    display: block;
+    text-align: left;
+}
+
+#descEJS{
+    max-width: 100%; /* Largura máxima desejada (Garante que a descrição não faça a pagina sair) */
+    overflow: hidden;
+}
+.valor {
+    position: relative;
+}
+
+#descricao{
+    width: 400px;
+    height: 100px;
+    border-width: 3px;
+    border-style: groove;
+    border-radius: 20px;
 }

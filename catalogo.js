@@ -50,7 +50,8 @@ app.get('/', function(req, res) {
                     res.render('errorS', { message: 'ID já está cadastrado' });
                 } else {
                     // ID não está cadastrado, inserir o novo item
-                    if (req.body.nome.trim() != "" && req.body.preco > 0 && req.body.qtd >0 && req.body.id >0) { // Validação se id, preço e quantidade são maiores que 0 e se o nome não é vazio
+                    if (req.body.nome.trim() != "" && req.body.preco > 0 && req.body.qtd >0 && req.body.id >0) {
+                        // Validação se id, preço e quantidade são maiores que 0 e se o nome não é vazio
                         db.run('INSERT INTO Item(id, nome, preco, descricao, qtd) VALUES (?, ?, ?, ?, ?)',
                         [req.body.id, req.body.nome, req.body.preco, req.body.descricao, req.body.qtd],
                         function(err) {
